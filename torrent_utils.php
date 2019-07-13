@@ -67,6 +67,7 @@ function get_torrent($path) {
             'magnet' => $magnet_url,
             'torrent_name' => $file_name,
             'display_name' => $dn,
+            'path' => $path,
             'size_raw' => (int)$size,
             'size' => size_beautify($size),
             'created' => $created,
