@@ -3,8 +3,6 @@ require_once 'RequestHeader.php';
 require_once 'db_context.php';
 include_once 'string_utils.php';
 include_once 'secure_indexer.php';
-include_once 'torrent_utils.php';
-$torrents = TorrentUtils::getTorrents();
 $context = new db_context();
 $context->connect();
 $arcs = $context->list_arcs();
@@ -12,7 +10,6 @@ $episodes = $context->list_episodes();
 $context->disconnect();
 $data = [];
 foreach($arcs as $arc) {
-	$arc_torrent = TorrentUtils::findTorrent($torrents, $arc['torrent_hash']);
 	$data['arcs'][] = [
 		'id' => $arc['id'],
 		'title' => $arc['title'],
@@ -20,14 +17,13 @@ foreach($arcs as $arc) {
 		'resolution' => $arc['resolution'],
 		"released" => $arc['released'] == 1,
 		"episodes" => $arc['episodes'],
-		'torrent' => $arc_torrent
+		'torrent_hash' => $arc['torrent_hash']
 	];
 }
 foreach($episodes as $episode) {
 	$is_released = isset($episode["released_date"]) && strtotime($episode["released_date"]) <= time();
 
 	// Set the episode object
-	$torrent = TorrentUtils::findTorrent($torrents, $episode['torrent_hash']);
 	$releasedDate = $is_released ? date("F j, Y", strtotime($episode["released_date"])) : "";
 	$data['episodes'][] = [
 		'id' => $episode['id'],
@@ -40,7 +36,7 @@ foreach($episodes as $episode) {
 		"isReleased" => $is_released,
 		'part' => $episode['part'],
 		'arcId' => $episode['arc_id'],
-		'torrent' => $torrent
+		'torrent_hash' => $episode['torrent_hash']
 	];
 }
 function usortchapters($a, $b) {
