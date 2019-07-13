@@ -3,11 +3,12 @@ require_once 'packages/PHP-Torrent-Scraper-master/httptscraper.php';
 require_once 'packages/PHP-Torrent-Scraper-master/udptscraper.php';
 require_once 'bencodemodel.php';
 require_once 'string_utils.php';
+require_once 'config.php';
 
 class TorrentUtils {
     static function getTorrents() {
         $torrents = [];
-        foreach(glob($_SERVER['DOCUMENT_ROOT'] . '/torrents/*.torrent') as $file) {
+        foreach(glob(TORRENT_DIRECTORY . '*.torrent') as $file) {
             $torrent = get_torrent($file);
             if($torrent != null) {
                 $torrents[] = $torrent;
