@@ -34,5 +34,9 @@ if(isset($_GET['json']) && $_GET['json'] == "true") {
 } else if (isset($_GET['magnet']) && $_GET['magnet'] == "true" && $torrent['magnet'] != null) {
 	header("Location: " . $torrent['magnet']);
 } else {
-	header("Location: /torrents/" . $torrent["torrent_name"]);
+	$path = $torrent['path'];
+	header('Content-Type: application/octet-stream');
+	header("Content-Transfer-Encoding: Binary"); 
+	header("Content-disposition: attachment; filename=\"" . basename($path) . "\""); 
+	readfile($path);
 }
