@@ -7,8 +7,7 @@ $allowed_http_origins = array(
 	'https://www.onepace.net',
 	'http://onepace.net',
 	'http://www.onepace.net',
-	'http://127.0.0.1',
-	'http://localhost',
+	'http://localhost:9000',
 );
 // get Origin sendend by the client if any
 $http_origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : FALSE;
