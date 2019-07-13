@@ -1,7 +1,6 @@
 <?php
 include_once 'config.php';
 include_once 'utils.php';
-include_once 'logger.php';
 
 class db_context {
 	private $connection;
@@ -13,7 +12,7 @@ class db_context {
 		}
 		$this->connection = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, $socket);
 		if (mysqli_connect_errno()) {
-			log_error('Failed to connect to MySQL: ' . mysqli_connect_error());
+			throw new Exception('Failed to connect to MySQL: ' . mysqli_connect_error());
 		}
 		$this->connection->set_charset(DB_CHARSET);
 	}
@@ -44,10 +43,10 @@ class db_context {
 	}
 	function get_result($stmt) {
 		if(!$stmt->execute()) {
-			log_error($stmt->error);
+			throw new Exception($stmt->error);
 		}
 		if(!$result = $stmt->get_result()) {
-			log_error($stmt->error);
+			throw new Exception($stmt->error);
 		}
 		$stmt->close();
 		$rows = [];
@@ -66,7 +65,7 @@ class db_context {
 	}
 	function execute($stmt) {
 		if(!$stmt->execute()) {
-			log_error($stmt->error);
+			throw new Exception($stmt->error);
 		}
 		$stmt->close();
 	}
@@ -74,8 +73,7 @@ class db_context {
 		$connection = $this->connection;
 		$stmt = $connection->prepare($sql);
 		if($stmt == null || $stmt === false) {
-			log_error('Wrong SQL: ' . $sql . ' Error: ' . $connection->errno . ' ' . $connection->error, E_USER_ERROR);
-			exit;
+			throw new Exception('Wrong SQL: ' . $sql . ' Error: ' . $connection->errno . ' ' . $connection->error, E_USER_ERROR);
 		}
 		return $stmt;
 	}
