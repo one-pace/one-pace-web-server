@@ -189,7 +189,7 @@ class db_context {
 			from episodes
 			where hidden = false
 			group by id
-			order by abs(chapters)
+			order by abs(chapters), part, released_date
 			;
 		");
 		$arcs = $this->prepare_and_get_result("select * from arcs where hidden = false order by abs(chapters) asc;");
