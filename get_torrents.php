@@ -48,5 +48,11 @@ foreach ($torrents as $torrent) {
 		'created_raw' => $torrent['created_raw']
 	];
 }
+
+function usorttorrentnames($a, $b) {
+	return strnatcmp($a['display_name'], $b['display_name']);
+}
+usort($data['torrents'], "usorttorrentnames");
+
 echo json_encode($data);
 ?>
