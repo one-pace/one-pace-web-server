@@ -25,7 +25,8 @@ foreach($arcs as $arc) {
 }
 foreach($episodes as $episode) {
 	$is_released = isset($episode["released_date"]) && strtotime($episode["released_date"]) <= time();
-	if (!$is_released) {
+	$existing_torrent = array_search($episode['torrent_hash'], array_column($torrents, 'hash'));
+	if (!$is_released || $existing_torrent != null) {
 		continue;
 	}
 	$torrent = TorrentUtils::findTorrent($ftp_torrents, $episode['torrent_hash']);
