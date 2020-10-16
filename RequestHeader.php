@@ -5,6 +5,8 @@ header('Vary: Origin', true);
 $allowed_http_origins = array(
 	'https://onepace.net',
 	'https://www.onepace.net',
+	'http://127.0.0.1',
+	'http://localhost',
 	'http://onepace.net',
 	'http://www.onepace.net',
 	'http://localhost:9000',
